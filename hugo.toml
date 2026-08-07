@@ -1,0 +1,9 @@
+baseURL = "https://unsafeai.github.io."
+languageCode = "en-us"
+title = "Unsafe AI"
+
+[params]
+  description = "Unsafe AI — research into intelligence beyond human-centered design."
+
+[markup.goldmark.renderer]
+  unsafe = true
