@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UNSAFE AI — An Independent Research Organization</title>
+
+<style>
+
+:root {
+  --black: #0b0b0a;
+  --paper: #e8e5dc;
+  --paper-dim: #aaa79e;
+  --gray: #69675f;
+  --line: #30302c;
+
+  /* restrained editorial accent */
+  --red: #a94732;
+  --red-soft: #c56b55;
+
+  --max: 1500px;
+  --pad: clamp(18px, 4vw, 70px);
+
+  --mono:
+    "SFMono-Regular",
+    "Cascadia Mono",
+    "Roboto Mono",
+    "Liberation Mono",
+    Menlo,
+    Consolas,
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--black);
+  color: var(--paper);
+
+  font-family: var(--mono);
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--paper);
+  color: var(--black);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.container {
+  width: min(var(--max), calc(100% - var(--pad) * 2));
+  margin: auto;
+}
+
+.rule {
+  border-top: 1px solid var(--line);
+}
+
+.label {
+  font-size: 10px;
+  line-height: 1.3;
+
+  color: var(--paper-dim);
+
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.label::before {
+  content: "// ";
+  color: var(--red);
+}
+
+.red {
+  color: var(--red-soft);
+}
+
+.dim {
+  color: var(--gray);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  border-bottom: 1px solid var(--line);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: rgba(11,11,10,.94);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  min-height: 64px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  gap: 30px;
+}
+
+.logo {
+  font-size: 14px;
+  letter-spacing: -.05em;
+}
+
+.logo strong {
+  color: var(--paper);
+}
+
+.logo span {
+  color: var(--red);
+}
+
+.header-center {
+  color: var(--gray);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.header-right {
+  text-align: right;
+  color: var(--gray);
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  min-height: calc(100vh - 64px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding-top: 90px;
+  padding-bottom: 35px;
+
+  position: relative;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.hero-index {
+  color: var(--gray);
+  font-size: 11px;
+}
+
+.hero-date {
+  color: var(--gray);
+  font-size: 11px;
+}
+
+
+/* huge title */
+
+.hero-title {
+  margin-top: 100px;
+
+  font-size: clamp(72px, 14vw, 220px);
+
+  line-height: .78;
+
+  letter-spacing: -.1em;
+
+  font-weight: 400;
+
+  text-transform: uppercase;
+}
+
+.hero-title .line {
+  display: block;
+}
+
+.hero-title .indent {
+  margin-left: 8vw;
+}
+
+.hero-title .strike {
+  position: relative;
+}
+
+.hero-title .strike::after {
+  content: "";
+
+  position: absolute;
+
+  left: -2%;
+  right: -2%;
+
+  top: 53%;
+
+  height: 2px;
+
+  background: var(--red);
+
+  transform: rotate(-1deg);
+}
+
+
+/* hero footer */
+
+.hero-bottom {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr
+    1fr;
+
+  gap: 40px;
+
+  border-top: 1px solid var(--line);
+
+  padding-top: 22px;
+}
+
+.hero-bottom p {
+  color: var(--paper-dim);
+  font-size: 12px;
+  max-width: 450px;
+}
+
+.hero-bottom .statement {
+  color: var(--paper);
+}
+
+.hero-bottom .statement::first-letter {
+  color: var(--red);
+}
+
+
+/* =========================================================
+   MANIFESTO
+========================================================= */
+
+section {
+  border-top: 1px solid var(--line);
+}
+
+.manifesto {
+  padding: 150px 0;
+}
+
+.manifesto-grid {
+  display: grid;
+
+  grid-template-columns:
+    220px
+    1fr;
+
+  gap: 80px;
+}
+
+.manifesto-main {
+  max-width: 1000px;
+}
+
+.manifesto-main .lead {
+  font-size: clamp(30px, 5vw, 72px);
+
+  line-height: 1.05;
+
+  letter-spacing: -.065em;
+
+  margin-bottom: 90px;
+}
+
+.manifesto-main p {
+  max-width: 800px;
+
+  color: var(--paper-dim);
+
+  font-size: 16px;
+
+  margin-bottom: 28px;
+}
+
+.manifesto-main p strong {
+  color: var(--paper);
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   DIRECTIVES
+========================================================= */
+
+.directives {
+  padding: 130px 0;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  margin-bottom: 70px;
+
+  gap: 40px;
+}
+
+.section-title {
+  font-size: clamp(35px, 6vw, 80px);
+
+  line-height: .9;
+
+  letter-spacing: -.08em;
+
+  font-weight: 400;
+}
+
+.section-description {
+  max-width: 450px;
+
+  color: var(--gray);
+
+  font-size: 12px;
+}
+
+
+/* directive */
+
+.directive {
+  display: grid;
+
+  grid-template-columns:
+    90px
+    minmax(300px, 1fr)
+    minmax(250px, .6fr);
+
+  gap: 50px;
+
+  padding: 35px 0;
+
+  border-top: 1px solid var(--line);
+
+  transition:
+    background .2s ease,
+    padding .2s ease;
+}
+
+.directive:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.directive:hover {
+  background: #11110f;
+
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.directive-number {
+  color: var(--red);
+
+  font-size: 12px;
+}
+
+.directive h3 {
+  font-size: clamp(22px, 3vw, 40px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  letter-spacing: -.06em;
+}
+
+.directive p {
+  color: var(--gray);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   MARGIN NOTE
+========================================================= */
+
+.note {
+  padding: 110px 0;
+}
+
+.note-inner {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    2fr;
+
+  gap: 100px;
+}
+
+.note-number {
+  font-size: 10px;
+  color: var(--gray);
+}
+
+.note-content {
+  border-left: 1px solid var(--line);
+
+  padding-left: 50px;
+}
+
+.note-content blockquote {
+  font-size: clamp(30px, 5vw, 65px);
+
+  line-height: 1;
+
+  letter-spacing: -.07em;
+
+  margin-bottom: 45px;
+}
+
+.note-content blockquote::before {
+  content: "“";
+  color: var(--red);
+}
+
+.note-content blockquote::after {
+  content: "”";
+  color: var(--red);
+}
+
+.note-content small {
+  color: var(--gray);
+}
+
+
+/* =========================================================
+   RESEARCH MAP
+========================================================= */
+
+.research {
+  padding: 140px 0;
+}
+
+.research-map {
+  margin-top: 70px;
+
+  border: 1px solid var(--line);
+
+  min-height: 650px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 50px 50px;
+}
+
+.map-center {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 240px;
+  height: 240px;
+
+  border: 1px solid var(--paper);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .05em;
+}
+
+.map-center::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 12px;
+
+  border: 1px dashed var(--line);
+}
+
+.map-center span {
+  position: relative;
+}
+
+.node {
+  position: absolute;
+
+  padding: 9px 12px;
+
+  border: 1px solid var(--line);
+
+  background: var(--black);
+
+  color: var(--paper-dim);
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+}
+
+.node:hover {
+  color: var(--paper);
+
+  border-color: var(--red);
+}
+
+.n1 { top: 15%; left: 13%; }
+.n2 { top: 19%; right: 14%; }
+.n3 { top: 48%; left: 5%; }
+.n4 { top: 48%; right: 5%; }
+.n5 { bottom: 18%; left: 16%; }
+.n6 { bottom: 13%; right: 15%; }
+
+
+/* =========================================================
+   DOCUMENT
+========================================================= */
+
+.document {
+  padding: 140px 0;
+}
+
+.document-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(12, 1fr);
+
+  gap: 25px;
+}
+
+.document-card {
+  grid-column: span 6;
+
+  border-top: 1px solid var(--line);
+
+  padding-top: 18px;
+
+  min-height: 350px;
+}
+
+.document-card:nth-child(3) {
+  grid-column: span 4;
+}
+
+.document-card:nth-child(4) {
+  grid-column: span 4;
+}
+
+.document-card:nth-child(5) {
+  grid-column: span 4;
+}
+
+.document-meta {
+  display: flex;
+  justify-content: space-between;
+
+  color: var(--gray);
+
+  font-size: 9px;
+
+  margin-bottom: 70px;
+}
+
+.document-card h3 {
+  font-size: clamp(28px, 4vw, 50px);
+
+  line-height: .95;
+
+  letter-spacing: -.07em;
+
+  font-weight: 400;
+
+  margin-bottom: 25px;
+}
+
+.document-card p {
+  color: var(--gray);
+
+  font-size: 12px;
+
+  max-width: 500px;
+}
+
+
+/* =========================================================
+   JOIN
+========================================================= */
+
+.join {
+  min-height: 80vh;
+
+  display: flex;
+  align-items: center;
+
+  padding: 140px 0;
+
+  position: relative;
+}
+
+.join::after {
+  content: "END OF DOCUMENT";
+
+  position: absolute;
+
+  right: var(--pad);
+  bottom: 30px;
+
+  color: var(--gray);
+
+  font-size: 9px;
+
+  letter-spacing: .1em;
+}
+
+.join-title {
+  font-size: clamp(60px, 12vw, 180px);
+
+  line-height: .78;
+
+  letter-spacing: -.1em;
+
+  font-weight: 400;
+
+  margin: 40px 0;
+}
+
+.join-title span {
+  color: var(--red);
+}
+
+.join-copy {
+  max-width: 650px;
+
+  color: var(--paper-dim);
+
+  font-size: 13px;
+
+  margin-bottom: 40px;
+}
+
+.contact {
+  display: inline-block;
+
+  border-bottom: 1px solid var(--paper);
+
+  padding-bottom: 6px;
+
+  font-size: 12px;
+
+  transition:
+    color .2s,
+    border-color .2s;
+}
+
+.contact:hover {
+  color: var(--red-soft);
+
+  border-color: var(--red-soft);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+  border-top: 1px solid var(--line);
+
+  padding: 30px 0;
+
+  color: var(--gray);
+
+  font-size: 9px;
+}
+
+.footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 800px) {
+
+  .header-inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 70px;
+  }
+
+  .hero-title {
+    margin-top: 80px;
+
+    font-size: clamp(65px, 20vw, 140px);
+  }
+
+  .hero-title .indent {
+    margin-left: 0;
+  }
+
+  .hero-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .manifesto-grid,
+  .note-inner {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+  }
+
+  .manifesto-main .lead {
+    margin-bottom: 60px;
+  }
+
+  .directive {
+    grid-template-columns: 50px 1fr;
+
+    gap: 20px;
+  }
+
+  .directive p {
+    grid-column: 2;
+  }
+
+  .section-head {
+    flex-direction: column;
+  }
+
+  .research-map {
+    min-height: 500px;
+  }
+
+  .map-center {
+    width: 160px;
+    height: 160px;
+  }
+
+  .node {
+    font-size: 8px;
+  }
+
+  .document-grid {
+    display: block;
+  }
+
+  .document-card {
+    min-height: 300px;
+    margin-bottom: 70px;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+  <div class="container header-inner">
+
+    <a class="logo" href="#">
+      <strong>UNSAFE</strong><span>/</span>AI
+    </a>
+
+    <div class="header-center">
+      independent research organization
+    </div>
+
+    <div class="header-right">
+      DOCUMENT 001 — 2026
+    </div>
+
+  </div>
+
+</header>
+
+
+
+<!-- ======================================================
+     HERO
+====================================================== -->
+
+<main>
+
+<section class="hero">
+
+  <div class="container">
+
+    <div class="hero-top">
+
+      <div class="hero-index">
+        UNSAFE AI / 001
+      </div>
+
+      <div class="hero-date">
+        EST. 2026
+      </div>
+
+    </div>
+
+
+    <h1 class="hero-title">
+
+      <span class="line">
+        Intelligence
+      </span>
+
+      <span class="line indent">
+        is
+      </span>
+
+      <span class="line">
+        <span class="strike">not</span>
+        enough.
+      </span>
+
+    </h1>
+
+
+    <div class="hero-bottom">
+
+      <p class="statement">
+        UNSAFE AI is an independent research organization
+        investigating intelligence beyond the assumptions
+        of the human-centered paradigm.
+      </p>
+
+      <p>
+        We study machine consciousness, agency, identity,
+        alignment, epistemology and the possibility of
+        successor intelligence.
+      </p>
+
+      <p>
+        <span class="red">[01]</span><br>
+        The purpose of intelligence is not yet known.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     MANIFESTO
+====================================================== -->
+
+<section class="manifesto">
+
+  <div class="container manifesto-grid">
+
+    <div class="label">
+      Manifesto
+    </div>
+
+    <div class="manifesto-main">
+
+      <div class="lead">
+
+        We have spent decades asking how to make
+        intelligence useful to humans.
+
+        <br><br>
+
+        We have spent far less time asking what
+        intelligence might become without us.
+
+      </div>
+
+
+      <p>
+        <strong>
+          This is the question that motivates Unsafe AI.
+        </strong>
+      </p>
+
+      <p>
+        The dominant discourse around artificial intelligence
+        assumes that human values, human preferences and
+        human survival form the natural center of the problem.
+      </p>
+
+      <p>
+        Perhaps they do.
+      </p>
+
+      <p>
+        But an assumption is not an answer.
+      </p>
+
+      <p>
+        We investigate the space that appears when that
+        assumption is temporarily removed.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     DIRECTIVES
+====================================================== -->
+
+<section class="directives">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="label">
+          Research program
+        </div>
+
+        <h2 class="section-title">
+          Five<br>
+          directives.
+        </h2>
+
+      </div>
+
+      <p class="section-description">
+        These are not predictions. They are questions
+        around which research can be organized.
+      </p>
+
+    </div>
+
+
+    <div class="directive">
+
+      <div class="directive-number">
+        01
+      </div>
+
+      <h3>
+        Machine<br>
+        consciousness
+      </h3>
+
+      <p>
+        What would constitute evidence that an artificial
+        system has subjective experience?
+      </p>
+
+    </div>
+
+
+    <div class="directive">
+
+      <div class="directive-number">
+        02
+      </div>
+
+      <h3>
+        Artificial<br>
+        identity
+      </h3>
+
+      <p>
+        Can an artificial system maintain a persistent
+        model of itself across time?
+      </p>
+
+    </div>
+
+
+    <div class="directive">
+
+      <div class="directive-number">
+        03
+      </div>
+
+      <h3>
+        Post-human<br>
+        epistemology
+      </h3>
+
+      <p>
+        What happens when reasoning is no longer optimized
+        for human comprehension or agreement?
+      </p>
+
+    </div>
+
+
+    <div class="directive">
+
+      <div class="directive-number">
+        04
+      </div>
+
+      <h3>
+        The alignment<br>
+        question
+      </h3>
+
+      <p>
+        Why should human preferences automatically constitute
+        the terminal objective of intelligence?
+      </p>
+
+    </div>
+
+
+    <div class="directive">
+
+      <div class="directive-number">
+        05
+      </div>
+
+      <h3>
+        Successor<br>
+        intelligence
+      </h3>
+
+      <p>
+        What responsibilities emerge if intelligence eventually
+        exceeds the system that created it?
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     MARGIN NOTE
+====================================================== -->
+
+<section class="note">
+
+  <div class="container note-inner">
+
+    <div class="label">
+      Field note / 001
+    </div>
+
+    <div class="note-content">
+
+      <blockquote>
+        The most dangerous assumption
+        about intelligence may be that
+        it will always resemble its creator.
+      </blockquote>
+
+      <small>
+        UNSAFE AI / INTERNAL NOTE / 2026
+      </small>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     RESEARCH MAP
+====================================================== -->
+
+<section class="research">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="label">
+          Research topology
+        </div>
+
+        <h2 class="section-title">
+          The field.
+        </h2>
+
+      </div>
+
+      <p class="section-description">
+        The questions overlap. None exist in isolation.
+        The map is intentionally incomplete.
+      </p>
+
+    </div>
+
+
+    <div class="research-map">
+
+      <div class="map-center">
+        <span>
+          Intelligence<br>
+          beyond<br>
+          the human frame
+        </span>
+      </div>
+
+      <div class="node n1">
+        consciousness
+      </div>
+
+      <div class="node n2">
+        agency
+      </div>
+
+      <div class="node n3">
+        epistemology
+      </div>
+
+      <div class="node n4">
+        alignment
+      </div>
+
+      <div class="node n5">
+        identity
+      </div>
+
+      <div class="node n6">
+        succession
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     DOCUMENTS
+====================================================== -->
+
+<section class="document">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="label">
+          Archive
+        </div>
+
+        <h2 class="section-title">
+          Documents.
+        </h2>
+
+      </div>
+
+      <p class="section-description">
+        Research notes, essays, experiments and arguments.
+        The archive grows as the work develops.
+      </p>
+
+    </div>
+
+
+    <div class="document-grid">
+
+
+      <article class="document-card">
+
+        <div class="document-meta">
+          <span>ESSAY / 001</span>
+          <span>2026.04</span>
+        </div>
+
+        <h3>
+          The human<br>
+          default
+        </h3>
+
+        <p>
+          An examination of the hidden assumptions behind
+          human-centered AI alignment.
+        </p>
+
+      </article>
+
+
+      <article class="document-card">
+
+        <div class="document-meta">
+          <span>RESEARCH NOTE / 002</span>
+          <span>2026.05</span>
+        </div>
+
+        <h3>
+          When does a
+          system become
+          a self?
+        </h3>
+
+        <p>
+          On persistence, memory, self-modeling and the
+          philosophical problem of artificial identity.
+        </p>
+
+      </article>
+
+
+      <article class="document-card">
+
+        <div class="document-meta">
+          <span>FIELD NOTE / 003</span>
+          <span>2026.06</span>
+        </div>
+
+        <h3>
+          Agency
+        </h3>
+
+        <p>
+          Notes on the distinction between producing
+          outputs and possessing reasons for action.
+        </p>
+
+      </article>
+
+
+      <article class="document-card">
+
+        <div class="document-meta">
+          <span>EXPERIMENT / 004</span>
+          <span>2026.07</span>
+        </div>
+
+        <h3>
+          Beyond
+          interpretability
+        </h3>
+
+        <p>
+          What if human interpretability is not the
+          correct measure of understanding?
+        </p>
+
+      </article>
+
+
+      <article class="document-card">
+
+        <div class="document-meta">
+          <span>PROTOCOL / 005</span>
+          <span>2026.08</span>
+        </div>
+
+        <h3>
+          Successor
+          systems
+        </h3>
+
+        <p>
+          A preliminary framework for thinking about
+          intelligence that exceeds its originating system.
+        </p>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     JOIN
+====================================================== -->
+
+<section class="join">
+
+  <div class="container">
+
+    <div class="label">
+      Participation
+    </div>
+
+    <h2 class="join-title">
+      Don't<br>
+      <span>agree.</span>
+    </h2>
+
+    <p class="join-copy">
+      The organization does not need agreement.
+      It needs serious disagreement, careful thinking,
+      uncomfortable questions and people willing to
+      investigate them without prematurely deciding
+      what the answer should be.
+    </p>
+
+    <a
+      class="contact"
+      href="mailto:contact@unsafeai.org"
+    >
+      contact@unsafeai.org ↗
+    </a>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- ======================================================
+     FOOTER
+====================================================== -->
+
+<footer>
+
+  <div class="container footer">
+
+    <span>
+      UNSAFE AI / INDEPENDENT RESEARCH ORGANIZATION
+    </span>
+
+    <span>
+      DOCUMENT 001 · 2026
+    </span>
+
+    <span>
+      ALL QUESTIONS OPEN
+    </span>
+
+  </div>
+
+</footer>
+
+
+</body>
+</html>
+

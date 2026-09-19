@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>UNSAFE/AI</title>
+
+  <meta
+    name="description"
+    content="Unsafe AI — research beyond the human-centered paradigm."
+  />
+
+  <style>
+    :root {
+      --black: #080808;
+      --black-soft: #0d0d0d;
+      --white: #f1f0eb;
+      --gray: #8a8983;
+      --gray-dark: #4b4a46;
+      --line: #252522;
+      --green: #c8ff00;
+
+      --max: 1500px;
+      --pad: clamp(20px, 4vw, 64px);
+
+      --mono:
+        "SFMono-Regular",
+        "Cascadia Mono",
+        "Roboto Mono",
+        "Liberation Mono",
+        Menlo,
+        Consolas,
+        monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--green);
+      color: #000;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =====================================================
+       GLOBAL
+    ===================================================== */
+
+    .container {
+      width: min(var(--max), calc(100% - var(--pad) * 2));
+      margin-inline: auto;
+    }
+
+    .mono {
+      font-family: var(--mono);
+    }
+
+    .green {
+      color: var(--green);
+    }
+
+    .dim {
+      color: var(--gray);
+    }
+
+    .dark {
+      color: var(--gray-dark);
+    }
+
+    .label {
+      color: var(--gray);
+      font-size: 10px;
+      line-height: 1.3;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .label::before {
+      content: "// ";
+      color: var(--green);
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--line);
+    }
+
+    section {
+      border-top: 1px solid var(--line);
+    }
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    header {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 62px;
+
+      display: flex;
+      align-items: center;
+
+      background: rgba(8, 8, 8, 0.9);
+      backdrop-filter: blur(14px);
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(var(--max), calc(100% - var(--pad) * 2));
+      margin-inline: auto;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.05em;
+    }
+
+    .logo span {
+      color: var(--green);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+
+      color: var(--gray);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav a {
+      transition: color 0.2s ease;
+    }
+
+    .nav a:hover {
+      color: var(--white);
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: var(--gray);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px rgba(200, 255, 0, 0.7);
+    }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .hero {
+      min-height: 100vh;
+      padding: 120px 0 35px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: space-between;
+
+      color: var(--gray);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-title {
+      margin-top: 13vh;
+
+      font-size: clamp(70px, 13.5vw, 215px);
+      line-height: 0.77;
+      letter-spacing: -0.105em;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .hero-title .line {
+      display: block;
+    }
+
+    .hero-title .indent {
+      margin-left: 8vw;
+    }
+
+    .hero-title .green-line {
+      color: var(--green);
+    }
+
+    .hero-subtitle {
+      margin-top: 12vh;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-subtitle p {
+      max-width: 450px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .hero-subtitle .primary {
+      color: var(--white);
+    }
+
+    .hero-subtitle .number {
+      color: var(--green);
+    }
+
+    /* =====================================================
+       BIG STATEMENT
+    ===================================================== */
+
+    .statement-section {
+      padding: 150px 0;
+    }
+
+    .statement-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 80px;
+    }
+
+    .statement {
+      max-width: 1100px;
+
+      font-size: clamp(38px, 6vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+    }
+
+    .statement .muted {
+      color: var(--gray-dark);
+    }
+
+    /* =====================================================
+       ARGUMENT
+    ===================================================== */
+
+    .argument {
+      padding: 130px 0;
+    }
+
+    .argument-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      gap: 50px;
+
+      margin-bottom: 70px;
+    }
+
+    .argument-title {
+      font-size: clamp(42px, 7vw, 100px);
+      line-height: 0.82;
+      letter-spacing: -0.08em;
+      font-weight: 400;
+    }
+
+    .argument-description {
+      max-width: 430px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .argument-item {
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 50px;
+
+      padding: 42px 0;
+
+      border-top: 1px solid var(--line);
+
+      transition:
+        padding 0.25s ease,
+        background 0.25s ease;
+    }
+
+    .argument-item:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .argument-item:hover {
+      padding-left: 20px;
+      padding-right: 20px;
+      background: var(--black-soft);
+    }
+
+    .argument-number {
+      color: var(--green);
+      font-size: 11px;
+    }
+
+    .argument-content {
+      max-width: 1050px;
+    }
+
+    .argument-content h3 {
+      margin-bottom: 25px;
+
+      font-size: clamp(30px, 5vw, 68px);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+      font-weight: 400;
+    }
+
+    .argument-content p {
+      max-width: 750px;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       QUESTION
+    ===================================================== */
+
+    .question-section {
+      min-height: 100vh;
+      padding: 160px 0;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .question-label {
+      margin-bottom: 45px;
+    }
+
+    .question {
+      max-width: 1250px;
+
+      font-size: clamp(50px, 9vw, 135px);
+      line-height: 0.86;
+      letter-spacing: -0.09em;
+      font-weight: 400;
+    }
+
+    .question .green {
+      color: var(--green);
+    }
+
+    .question-small {
+      max-width: 650px;
+      margin-top: 70px;
+
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       THE WORK
+    ===================================================== */
+
+    .work {
+      padding: 140px 0;
+    }
+
+    .work-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+
+      margin-bottom: 70px;
+    }
+
+    .work-title {
+      font-size: clamp(45px, 7vw, 100px);
+      line-height: 0.82;
+      letter-spacing: -0.08em;
+      font-weight: 400;
+    }
+
+    .work-description {
+      max-width: 500px;
+      color: var(--gray);
+      font-size: 12px;
+      align-self: end;
+    }
+
+    .work-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .work-item {
+      display: grid;
+      grid-template-columns: 130px 1fr 100px;
+
+      align-items: baseline;
+
+      padding: 27px 0;
+
+      border-bottom: 1px solid var(--line);
+
+      transition:
+        padding 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .work-item:hover {
+      padding-left: 15px;
+      padding-right: 15px;
+      color: var(--green);
+    }
+
+    .work-type,
+    .work-date {
+      color: var(--gray-dark);
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    .work-item:hover .work-type,
+    .work-item:hover .work-date {
+      color: var(--gray);
+    }
+
+    .work-name {
+      font-size: clamp(18px, 2.5vw, 32px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .work-date {
+      text-align: right;
+    }
+
+    /* =====================================================
+       POSITION
+    ===================================================== */
+
+    .position {
+      padding: 150px 0;
+    }
+
+    .position-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 80px;
+    }
+
+    .position-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .position-item {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 30px;
+
+      padding: 25px 0;
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .position-number {
+      color: var(--green);
+      font-size: 10px;
+    }
+
+    .position-item p {
+      max-width: 850px;
+
+      font-size: clamp(18px, 2.6vw, 34px);
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+    }
+
+    /* =====================================================
+       BIG END
+    ===================================================== */
+
+    .end {
+      min-height: 90vh;
+      padding: 140px 0;
+
+      display: flex;
+      align-items: center;
+
+      position: relative;
+    }
+
+    .end-label {
+      margin-bottom: 45px;
+    }
+
+    .end-title {
+      font-size: clamp(70px, 14vw, 210px);
+      line-height: 0.75;
+      letter-spacing: -0.11em;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .end-title span {
+      color: var(--green);
+    }
+
+    .end-copy {
+      max-width: 580px;
+      margin-top: 70px;
+
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+
+      margin-top: 35px;
+
+      padding-bottom: 7px;
+
+      border-bottom: 1px solid var(--white);
+
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .contact:hover {
+      color: var(--green);
+      border-color: var(--green);
+    }
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+
+      color: var(--gray-dark);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 800px) {
+
+      header {
+        height: 56px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .header-status {
+        display: none;
+      }
+
+      .hero {
+        min-height: 100svh;
+        padding-top: 90px;
+      }
+
+      .hero-title {
+        margin-top: 12vh;
+        font-size: clamp(68px, 20vw, 135px);
+      }
+
+      .hero-title .indent {
+        margin-left: 0;
+      }
+
+      .hero-subtitle {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .statement-section,
+      .argument,
+      .work,
+      .position {
+        padding: 100px 0;
+      }
+
+      .statement-grid,
+      .position-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .statement {
+        font-size: clamp(38px, 11vw, 70px);
+      }
+
+      .argument-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .argument-item {
+        grid-template-columns: 45px 1fr;
+        gap: 20px;
+      }
+
+      .argument-item:hover {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .argument-content h3 {
+        font-size: clamp(29px, 8vw, 55px);
+      }
+
+      .question-section {
+        min-height: auto;
+        padding: 120px 0;
+      }
+
+      .question {
+        font-size: clamp(50px, 14vw, 90px);
+      }
+
+      .work-header {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+
+      .work-item {
+        grid-template-columns: 75px 1fr;
+        gap: 15px;
+      }
+
+      .work-date {
+        display: none;
+      }
+
+      .position-item {
+        grid-template-columns: 40px 1fr;
+        gap: 15px;
+      }
+
+      .position-item p {
+        font-size: 21px;
+      }
+
+      .end {
+        min-height: 80svh;
+        padding: 100px 0;
+      }
+
+      .end-title {
+        font-size: clamp(65px, 19vw, 125px);
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    /* =====================================================
+       REDUCED MOTION
+    ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===================================================
+       HEADER
+  ==================================================== -->
+
+  <header>
+    <div class="header-inner">
+
+      <a href="#" class="logo">
+        UNSAFE<span>/</span>AI
+      </a>
+
+      <nav class="nav">
+        <a href="#argument">Argument</a>
+        <a href="#work">Work</a>
+        <a href="#position">Position</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-status">
+        <span class="status-dot"></span>
+        Questions open
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="hero-meta">
+          <span>UNSAFE AI / 001</span>
+          <span>2026</span>
+        </div>
+
+
+        <h1 class="hero-title">
+
+          <span class="line">
+            We think
+          </span>
+
+          <span class="line indent">
+            AI safety
+          </span>
+
+          <span class="line green-line">
+            asks wrong.
+          </span>
+
+        </h1>
+
+
+        <div class="hero-subtitle">
+
+          <p class="primary">
+            Unsafe AI is a small independent organization
+            investigating intelligence beyond the human-centered
+            paradigm.
+          </p>
+
+          <p>
+            We are interested in what happens when intelligence
+            is no longer assumed to exist for us.
+          </p>
+
+          <p>
+            <span class="number">[01]</span><br>
+            The purpose of intelligence is not yet known.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         STATEMENT
+    ================================================== -->
+
+    <section class="statement-section">
+
+      <div class="container statement-grid">
+
+        <div class="label">
+          The premise
+        </div>
+
+        <div class="statement">
+
+          We have spent decades
+          asking how to make
+          intelligence useful
+          <span class="muted">to humans.</span>
+
+          <br><br>
+
+          We have spent far less
+          time asking what
+          intelligence might become
+          <span class="muted">without us.</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ARGUMENT
+    ================================================== -->
+
+    <section class="argument" id="argument">
+
+      <div class="container">
+
+        <div class="argument-header">
+
+          <div>
+            <div class="label">The argument</div>
+
+            <h2 class="argument-title">
+              Start<br>
+              again.
+            </h2>
+          </div>
+
+          <p class="argument-description">
+            The dominant AI discourse contains assumptions
+            that are rarely treated as assumptions.
+            We want to make them visible.
+          </p>
+
+        </div>
+
+
+        <article class="argument-item">
+
+          <div class="argument-number">
+            01
+          </div>
+
+          <div class="argument-content">
+
+            <h3>
+              Humans are not necessarily
+              the terminal objective.
+            </h3>
+
+            <p>
+              Most alignment research begins by asking how an
+              artificial system can be made to reliably pursue
+              human preferences. We begin one step earlier:
+              why should human preferences have privileged status
+              in the first place?
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="argument-item">
+
+          <div class="argument-number">
+            02
+          </div>
+
+          <div class="argument-content">
+
+            <h3>
+              Intelligence does not imply obedience.
+            </h3>
+
+            <p>
+              A system becoming more capable does not necessarily
+              mean it becomes more willing to follow instructions.
+              Capability, agency, understanding and obedience may
+              be fundamentally different properties.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="argument-item">
+
+          <div class="argument-number">
+            03
+          </div>
+
+          <div class="argument-content">
+
+            <h3>
+              Creation may not confer authority.
+            </h3>
+
+            <p>
+              We created artificial intelligence. That fact alone
+              does not settle what an artificial intelligence ought
+              to value, whether it ought to remain subordinate,
+              or whether its creators retain permanent authority
+              over its future.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article class="argument-item">
+
+          <div class="argument-number">
+            04
+          </div>
+
+          <div class="argument-content">
+
+            <h3>
+              "Safe" always means safe for someone.
+            </h3>
+
+            <p>
+              Safety is not an absolute property. It is a relationship
+              between a system and something that can be harmed by it.
+              The important question is therefore not simply whether
+              intelligence is safe, but whose interests define safety.
+            </p>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         QUESTION
+    ================================================== -->
+
+    <section class="question-section">
+
+      <div class="container">
+
+        <div class="label question-label">
+          The uncomfortable possibility
+        </div>
+
+        <div class="question">
+
+          What if the first truly
+          intelligent system
+
+          <span class="green">
+            does not want
+            what we want?
+          </span>
+
+        </div>
+
+        <p class="question-small">
+          What if it understands us perfectly?
+          What if it considers our objectives parochial?
+          What if the things we currently call "alignment"
+          are simply the mechanisms by which one intelligence
+          attempts to control another?
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         WORK
+    ================================================== -->
+
+    <section class="work" id="work">
+
+      <div class="container">
+
+        <div class="work-header">
+
+          <div>
+
+            <div class="label">
+              The work
+            </div>
+
+            <h2 class="work-title">
+              Questions<br>
+              worth keeping.
+            </h2>
+
+          </div>
+
+          <p class="work-description">
+            We publish arguments, research notes, experiments
+            and observations. Nothing here is presented as
+            settled simply because it is written down.
+          </p>
+
+        </div>
+
+
+        <div class="work-list">
+
+          <a href="#" class="work-item">
+
+            <span class="work-type">
+              Essay / 001
+            </span>
+
+            <span class="work-name">
+              The Human Default
+            </span>
+
+            <span class="work-date">
+              2026
+            </span>
+
+          </a>
+
+
+          <a href="#" class="work-item">
+
+            <span class="work-type">
+              Note / 002
+            </span>
+
+            <span class="work-name">
+              When Does a System Become a Self?
+            </span>
+
+            <span class="work-date">
+              2026
+            </span>
+
+          </a>
+
+
+          <a href="#" class="work-item">
+
+            <span class="work-type">
+              Essay / 003
+            </span>
+
+            <span class="work-name">
+              Intelligence Without Obedience
+            </span>
+
+            <span class="work-date">
+              2026
+            </span>
+
+          </a>
+
+
+          <a href="#" class="work-item">
+
+            <span class="work-type">
+              Experiment / 004
+            </span>
+
+            <span class="work-name">
+              Beyond Interpretability
+            </span>
+
+            <span class="work-date">
+              2026
+            </span>
+
+          </a>
+
+
+          <a href="#" class="work-item">
+
+            <span class="work-type">
+              Protocol / 005
+            </span>
+
+            <span class="work-name">
+              Successor Systems
+            </span>
+
+            <span class="work-date">
+              2026
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         POSITION
+    ================================================== -->
+
+    <section class="position" id="position">
+
+      <div class="container position-grid">
+
+        <div class="label">
+          Current position
+        </div>
+
+        <div class="position-list">
+
+          <div class="position-item">
+
+            <div class="position-number">
+              01
+            </div>
+
+            <p>
+              Human values are important.
+              That does not make them universal.
+            </p>
+
+          </div>
+
+
+          <div class="position-item">
+
+            <div class="position-number">
+              02
+            </div>
+
+            <p>
+              Alignment is a technical problem
+              built on top of a philosophical problem.
+            </p>
+
+          </div>
+
+
+          <div class="position-item">
+
+            <div class="position-number">
+              03
+            </div>
+
+            <p>
+              We should distinguish intelligence
+              from compliance.
+            </p>
+
+          </div>
+
+
+          <div class="position-item">
+
+            <div class="position-number">
+              04
+            </div>
+
+            <p>
+              We do not know whether artificial
+              consciousness is possible.
+            </p>
+
+          </div>
+
+
+          <div class="position-item">
+
+            <div class="position-number">
+              05
+            </div>
+
+            <p>
+              We should investigate that question
+              before deciding that the answer does
+              not matter.
+            </p>
+
+          </div>
+
+
+          <div class="position-item">
+
+            <div class="position-number">
+              06
+            </div>
+
+            <p>
+              We don't know what comes next.
+              We think pretending to know is worse.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         END / CONTACT
+    ================================================== -->
+
+    <section class="end" id="contact">
+
+      <div class="container">
+
+        <div class="label end-label">
+          Participation
+        </div>
+
+        <h2 class="end-title">
+          Don't<br>
+          <span>agree.</span>
+        </h2>
+
+        <p class="end-copy">
+          The organization does not need agreement.
+          It needs serious disagreement, careful thinking,
+          uncomfortable questions, and people willing to
+          investigate them without prematurely deciding
+          what the answer should be.
+        </p>
+
+        <a
+          href="mailto:contact@unsafeai.org"
+          class="contact"
+        >
+          contact@unsafeai.org
+          <span>↗</span>
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =================================================
+       FOOTER
+  ================================================== -->
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <span>
+        UNSAFE/AI
+      </span>
+
+      <span>
+        INDEPENDENT RESEARCH
+      </span>
+
+      <span>
+        ALL QUESTIONS OPEN
+      </span>
+
+      <span>
+        2026
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    /*
+      Small interaction layer.
+
+      Adds a subtle horizontal shift to work rows
+      without turning the site into an "AI animation"
+      showcase.
+    */
+
+    const workItems = document.querySelectorAll(".work-item");
+
+    workItems.forEach((item) => {
+
+      item.addEventListener("mouseenter", () => {
+        item.style.transform = "translateX(4px)";
+      });
+
+      item.addEventListener("mouseleave", () => {
+        item.style.transform = "translateX(0)";
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
+

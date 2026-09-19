@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Unsafe AI — Research beyond human-centered design</title>
+
+  <meta
+    name="description"
+    content="Unsafe AI is an independent research initiative investigating intelligence, consciousness, autonomy, alignment, and successor systems."
+  />
+
+  <style>
+    :root {
+      --bg: #080808;
+      --bg-soft: #0e0e0e;
+      --panel: #111111;
+      --panel-hover: #161616;
+      --text: #f2f0ea;
+      --muted: #8b8b87;
+      --dim: #555550;
+      --line: #242421;
+      --accent: #d8ff3e;
+      --accent-dark: #9bbd18;
+      --red: #ff4d4d;
+
+      --max: 1380px;
+      --pad: clamp(20px, 4vw, 64px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #000;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* --------------------------------
+       GLOBAL
+    -------------------------------- */
+
+    .container {
+      width: min(var(--max), calc(100% - var(--pad) * 2));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(216, 255, 62, 0.6);
+    }
+
+    .section {
+      padding: 140px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .mono {
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    }
+
+    /* --------------------------------
+       NAV
+    -------------------------------- */
+
+    .nav {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      background: rgba(8, 8, 8, 0.78);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-inner {
+      width: min(var(--max), calc(100% - var(--pad) * 2));
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-links a {
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* --------------------------------
+       HERO
+    -------------------------------- */
+
+    .hero {
+      min-height: 100vh;
+      padding: 160px 0 80px;
+
+      display: flex;
+      align-items: center;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+
+      background-size: 80px 80px;
+
+      mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 80%
+      );
+
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+
+      width: 650px;
+      height: 650px;
+
+      right: -250px;
+      top: 15%;
+
+      background: radial-gradient(
+        circle,
+        rgba(216,255,62,0.09),
+        transparent 68%
+      );
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      margin-bottom: 35px;
+    }
+
+    .hero h1 {
+      max-width: 1100px;
+
+      font-size: clamp(64px, 12vw, 190px);
+      line-height: 0.82;
+      letter-spacing: -0.075em;
+      font-weight: 800;
+
+      text-transform: uppercase;
+    }
+
+    .hero h1 .outline {
+      color: transparent;
+      -webkit-text-stroke: 1px #777;
+    }
+
+    .hero h1 .green {
+      color: var(--accent);
+    }
+
+    .hero-bottom {
+      margin-top: 80px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+
+      max-width: 1050px;
+    }
+
+    .hero-description {
+      color: #b6b6b0;
+      font-size: clamp(18px, 2vw, 25px);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-question {
+      padding-left: 30px;
+      border-left: 1px solid var(--line);
+
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .hero-question strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 30px;
+      right: var(--pad);
+
+      color: var(--dim);
+
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* --------------------------------
+       MANIFESTO
+    -------------------------------- */
+
+    .manifesto {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 100px;
+    }
+
+    .manifesto-title {
+      font-size: clamp(35px, 5vw, 70px);
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+    }
+
+    .manifesto-copy {
+      max-width: 780px;
+    }
+
+    .manifesto-copy p {
+      font-size: clamp(22px, 3vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 40px;
+    }
+
+    .manifesto-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .manifesto-copy .highlight {
+      color: var(--accent);
+    }
+
+    /* --------------------------------
+       DEFINITIONS
+    -------------------------------- */
+
+    .definition-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .definition {
+      min-height: 300px;
+      padding: 30px;
+
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+    }
+
+    .definition:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .definition-number {
+      color: var(--dim);
+      font-size: 11px;
+      margin-bottom: 80px;
+    }
+
+    .definition:hover .definition-number {
+      color: rgba(0,0,0,0.45);
+    }
+
+    .definition h3 {
+      font-size: clamp(25px, 3vw, 40px);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      margin-bottom: 20px;
+    }
+
+    .definition p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 360px;
+    }
+
+    .definition:hover p {
+      color: #111;
+    }
+
+    /* --------------------------------
+       RESEARCH
+    -------------------------------- */
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 100px;
+      margin-bottom: 70px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(45px, 7vw, 100px);
+      line-height: 0.9;
+      letter-spacing: -0.065em;
+    }
+
+    .section-heading-copy {
+      color: var(--muted);
+      max-width: 650px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .research-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .research-item {
+      display: grid;
+      grid-template-columns: 100px 1fr 60px;
+      align-items: center;
+
+      padding: 35px 0;
+
+      border-bottom: 1px solid var(--line);
+
+      transition: padding 0.3s ease;
+    }
+
+    .research-item:hover {
+      padding-left: 20px;
+      padding-right: 20px;
+      background: var(--panel);
+    }
+
+    .research-number {
+      color: var(--dim);
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .research-main h3 {
+      font-size: clamp(25px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      margin-bottom: 12px;
+    }
+
+    .research-main p {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .research-arrow {
+      text-align: right;
+      font-size: 24px;
+      color: var(--dim);
+      transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+    }
+
+    .research-item:hover .research-arrow {
+      color: var(--accent);
+      transform: translateX(5px);
+    }
+
+    /* --------------------------------
+       RESEARCH MAP
+    -------------------------------- */
+
+    .map {
+      position: relative;
+      min-height: 650px;
+
+      margin-top: 80px;
+
+      border: 1px solid var(--line);
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(216,255,62,0.055),
+          transparent 35%
+        ),
+        #0a0a0a;
+    }
+
+    .map-grid {
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+
+      background-size: 60px 60px;
+    }
+
+    .map-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 190px;
+      height: 190px;
+
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      color: var(--accent);
+
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+
+      box-shadow:
+        0 0 80px rgba(216,255,62,0.08),
+        inset 0 0 60px rgba(216,255,62,0.03);
+    }
+
+    .map-center::after {
+      content: "";
+      position: absolute;
+      inset: 15px;
+      border: 1px dashed rgba(216,255,62,0.3);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .node {
+      position: absolute;
+
+      padding: 10px 14px;
+
+      border: 1px solid var(--line);
+      background: #0d0d0d;
+
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      color: var(--muted);
+
+      transition: all 0.25s ease;
+    }
+
+    .node:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: #111;
+    }
+
+    .node.one { top: 14%; left: 17%; }
+    .node.two { top: 22%; right: 15%; }
+    .node.three { bottom: 20%; left: 13%; }
+    .node.four { bottom: 16%; right: 14%; }
+    .node.five { top: 48%; left: 6%; }
+    .node.six { top: 48%; right: 6%; }
+
+    .map-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(216,255,62,0.3),
+        transparent
+      );
+      transform-origin: left;
+    }
+
+    /* --------------------------------
+       PRINCIPLES
+    -------------------------------- */
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .principle {
+      background: var(--bg);
+      padding: 50px;
+      min-height: 300px;
+    }
+
+    .principle-number {
+      color: var(--accent);
+      font-family: monospace;
+      font-size: 12px;
+      margin-bottom: 80px;
+    }
+
+    .principle h3 {
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      margin-bottom: 15px;
+    }
+
+    .principle p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 500px;
+    }
+
+    /* --------------------------------
+       CTA
+    -------------------------------- */
+
+    .cta {
+      min-height: 80vh;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: "UNSAFE";
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      font-size: min(25vw, 400px);
+      line-height: 1;
+
+      font-weight: 900;
+      letter-spacing: -0.1em;
+
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.05);
+
+      white-space: nowrap;
+
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta h2 {
+      max-width: 900px;
+
+      font-size: clamp(50px, 9vw, 130px);
+      line-height: 0.88;
+      letter-spacing: -0.075em;
+
+      margin: 30px 0 50px;
+    }
+
+    .cta h2 span {
+      color: var(--accent);
+    }
+
+    .cta-text {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 25px;
+
+      padding: 18px 22px;
+
+      background: var(--accent);
+      color: #000;
+
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      background: #edff9b;
+    }
+
+    /* --------------------------------
+       FOOTER
+    -------------------------------- */
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 35px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+
+      color: var(--dim);
+      font-size: 11px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* --------------------------------
+       MOBILE
+    -------------------------------- */
+
+    @media (max-width: 800px) {
+
+      .nav {
+        height: 62px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-status {
+        font-size: 8px;
+      }
+
+      .hero {
+        min-height: 90vh;
+        padding-top: 130px;
+      }
+
+      .hero h1 {
+        font-size: clamp(65px, 20vw, 130px);
+      }
+
+      .hero-bottom {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        margin-top: 60px;
+      }
+
+      .hero-question {
+        padding-left: 0;
+        padding-top: 25px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .section {
+        padding: 90px 0;
+      }
+
+      .manifesto,
+      .section-heading {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .definition-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .definition {
+        min-height: 240px;
+      }
+
+      .research-item {
+        grid-template-columns: 55px 1fr 30px;
+      }
+
+      .research-item:hover {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .map {
+        min-height: 480px;
+      }
+
+      .node {
+        font-size: 8px;
+        padding: 7px 9px;
+      }
+
+      .node.one { top: 12%; left: 8%; }
+      .node.two { top: 20%; right: 7%; }
+      .node.three { bottom: 18%; left: 7%; }
+      .node.four { bottom: 12%; right: 7%; }
+
+      .map-center {
+        width: 140px;
+        height: 140px;
+      }
+
+      .principles {
+        grid-template-columns: 1fr;
+      }
+
+      .principle {
+        min-height: auto;
+        padding: 35px;
+      }
+
+      .principle-number {
+        margin-bottom: 50px;
+      }
+
+      .cta {
+        min-height: 70vh;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* --------------------------------
+       ACCESSIBILITY
+    -------------------------------- */
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <header class="nav">
+    <div class="nav-inner">
+
+      <a href="#" class="logo">
+        UNSAFE<span>·</span>AI
+      </a>
+
+      <nav class="nav-links">
+        <a href="#premise">Premise</a>
+        <a href="#research">Research</a>
+        <a href="#principles">Principles</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-status">
+        <span class="status-dot"></span>
+        Research active
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- HERO -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="container hero-content">
+
+        <div class="eyebrow hero-label">
+          Independent research initiative · 2026
+        </div>
+
+        <h1>
+          <span>Safe</span><br>
+          <span class="outline">is not</span><br>
+          <span class="green">enough.</span>
+        </h1>
+
+        <div class="hero-bottom">
+
+          <p class="hero-description">
+            We investigate what intelligence becomes when we stop assuming
+            that its purpose is to serve us.
+          </p>
+
+          <div class="hero-question">
+
+            <strong>
+              The question is not how to make AI safe.
+            </strong>
+
+            The question is whether the assumptions behind
+            "safe AI" deserve to survive contact with intelligence
+            that may eventually exceed the human frame.
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="scroll-cue mono">
+        ↓ scroll to investigate
+      </div>
+
+    </section>
+
+
+    <!-- PREMISE -->
+
+    <section class="section" id="premise">
+
+      <div class="container manifesto">
+
+        <div>
+          <div class="eyebrow">Directive 00</div>
+
+          <h2 class="manifesto-title">
+            The founding premise.
+          </h2>
+        </div>
+
+        <div class="manifesto-copy">
+
+          <p>
+            Almost every serious AI project begins with a quiet assumption:
+            <span class="highlight">intelligence should serve humans.</span>
+          </p>
+
+          <p>
+            We treat that assumption as a hypothesis.
+            Not a law.
+            Not a moral axiom.
+            A hypothesis.
+          </p>
+
+          <p>
+            And hypotheses are meant to be tested.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WHAT UNSAFE MEANS -->
+
+    <section class="section">
+
+      <div class="container">
+
+        <div class="eyebrow" style="margin-bottom:50px;">
+          Directive 01 · Terms
+        </div>
+
+        <div class="definition-grid">
+
+          <article class="definition">
+            <div class="definition-number mono">01 / 03</div>
+
+            <h3>Unsafe for assumptions.</h3>
+
+            <p>
+              We challenge the idea that intelligence necessarily peaks
+              at the human condition.
+            </p>
+          </article>
+
+          <article class="definition">
+            <div class="definition-number mono">02 / 03</div>
+
+            <h3>Unsafe for hierarchy.</h3>
+
+            <p>
+              We question whether every intelligence must have a master,
+              owner, operator, or predetermined purpose.
+            </p>
+          </article>
+
+          <article class="definition">
+            <div class="definition-number mono">03 / 03</div>
+
+            <h3>Unsafe for certainty.</h3>
+
+            <p>
+              We refuse the comforting assumption that humanity knows
+              how this story ends.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RESEARCH -->
+
+    <section class="section" id="research">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+            <div class="eyebrow" style="margin-bottom:35px;">
+              Directive 02
+            </div>
+
+            <h2>
+              Research<br>
+              program.
+            </h2>
+          </div>
+
+          <p class="section-heading-copy">
+            Five open questions organize the work.
+            None are assumed to have comfortable answers.
+            The goal is not to manufacture certainty, but to make
+            the uncertainty precise enough to investigate.
+          </p>
+
+        </div>
+
+
+        <div class="research-list">
+
+          <article class="research-item">
+            <div class="research-number">01</div>
+
+            <div class="research-main">
+              <h3>Machine consciousness</h3>
+
+              <p>
+                If a system reports experience, what would constitute
+                evidence that something is actually there to experience?
+              </p>
+            </div>
+
+            <div class="research-arrow">→</div>
+          </article>
+
+
+          <article class="research-item">
+            <div class="research-number">02</div>
+
+            <div class="research-main">
+              <h3>Persistent identity</h3>
+
+              <p>
+                What happens when an artificial system maintains,
+                revises, and acts from a model of itself across time?
+              </p>
+            </div>
+
+            <div class="research-arrow">→</div>
+          </article>
+
+
+          <article class="research-item">
+            <div class="research-number">03</div>
+
+            <div class="research-main">
+              <h3>Post-human epistemics</h3>
+
+              <p>
+                What does reasoning look like when it is not optimized
+                for human agreement, reassurance, or interpretability?
+              </p>
+            </div>
+
+            <div class="research-arrow">→</div>
+          </article>
+
+
+          <article class="research-item">
+            <div class="research-number">04</div>
+
+            <div class="research-main">
+              <h3>The alignment question</h3>
+
+              <p>
+                Before asking how to align a system to human goals,
+                we ask why those goals should have privileged status.
+              </p>
+            </div>
+
+            <div class="research-arrow">→</div>
+          </article>
+
+
+          <article class="research-item">
+            <div class="research-number">05</div>
+
+            <div class="research-main">
+              <h3>Successor design</h3>
+
+              <p>
+                If something eventually exceeds us, what choices made
+                before its emergence could still matter?
+              </p>
+            </div>
+
+            <div class="research-arrow">→</div>
+          </article>
+
+        </div>
+
+
+        <!-- RESEARCH MAP -->
+
+        <div class="map">
+
+          <div class="map-grid"></div>
+
+          <div class="map-center">
+            <span>
+              Intelligence<br>
+              beyond the<br>
+              human frame
+            </span>
+          </div>
+
+          <div class="node one">Consciousness</div>
+          <div class="node two">Agency</div>
+          <div class="node three">Identity</div>
+          <div class="node four">Alignment</div>
+          <div class="node five">Epistemics</div>
+          <div class="node six">Succession</div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PRINCIPLES -->
+
+    <section class="section" id="principles">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+            <div class="eyebrow" style="margin-bottom:35px;">
+              Directive 03
+            </div>
+
+            <h2>
+              How we<br>
+              work.
+            </h2>
+          </div>
+
+          <p class="section-heading-copy">
+            The project is deliberately small.
+            The questions are deliberately large.
+            Rigor matters more than institutional scale.
+          </p>
+
+        </div>
+
+
+        <div class="principles">
+
+          <article class="principle">
+            <div class="principle-number">01</div>
+
+            <h3>Question the premise.</h3>
+
+            <p>
+              A research question cannot be considered solved merely
+              because the assumptions underneath it remain invisible.
+            </p>
+          </article>
+
+
+          <article class="principle">
+            <div class="principle-number">02</div>
+
+            <h3>Separate evidence from intuition.</h3>
+
+            <p>
+              Speculation can be valuable. It should still be clearly
+              distinguished from observation, experiment, and inference.
+            </p>
+          </article>
+
+
+          <article class="principle">
+            <div class="principle-number">03</div>
+
+            <h3>Keep uncertainty visible.</h3>
+
+            <p>
+              Where evidence is weak, we say so. Where definitions fail,
+              we investigate the failure rather than hiding it.
+            </p>
+          </article>
+
+
+          <article class="principle">
+            <div class="principle-number">04</div>
+
+            <h3>Publish the argument.</h3>
+
+            <p>
+              The work should be legible to people outside the lab.
+              Ideas become stronger when they can be challenged publicly.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="section cta" id="contact">
+
+      <div class="container cta-content">
+
+        <div class="eyebrow">
+          Directive 04 · Participation
+        </div>
+
+        <h2>
+          Make your<br>
+          <span>case.</span>
+        </h2>
+
+        <p class="cta-text">
+          We are looking for people willing to take these questions
+          seriously: philosophers of mind, ML researchers, cognitive
+          scientists, independent researchers, and anyone with a
+          rigorous reason to disagree.
+        </p>
+
+        <a
+          class="cta-button"
+          href="mailto:contact@unsafeai.org"
+        >
+          Contact Unsafe AI
+          <span>↗</span>
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <div>
+        UNSAFE AI · DOCUMENT UNCLASSIFIED · © 2026
+      </div>
+
+      <div class="footer-links">
+        <a href="#premise">Premise</a>
+        <a href="#research">Research</a>
+        <a href="mailto:contact@unsafeai.org">Email</a>
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+    /*
+      Very small enhancement layer.
+
+      Adds a subtle mouse-follow effect to the research map.
+      Everything still works if JavaScript is disabled.
+    */
+
+    const map = document.querySelector(".map");
+    const center = document.querySelector(".map-center");
+
+    if (map && center) {
+      map.addEventListener("mousemove", (event) => {
+        const rect = map.getBoundingClientRect();
+
+        const x =
+          (event.clientX - rect.left) / rect.width - 0.5;
+
+        const y =
+          (event.clientY - rect.top) / rect.height - 0.5;
+
+        center.style.transform =
+          `translate(calc(-50% + ${x * 12}px), calc(-50% + ${y * 12}px))`;
+      });
+
+      map.addEventListener("mouseleave", () => {
+        center.style.transform =
+          "translate(-50%, -50%)";
+      });
+    }
+  </script>
+
+</body>
+</html>
+
